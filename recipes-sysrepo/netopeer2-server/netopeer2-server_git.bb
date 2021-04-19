@@ -22,26 +22,8 @@ do_install_append () {
     install -d ${D}/usr/share/netopeer2-server
     install -d ${D}/etc/sysrepo/yang
     install -d ${D}/etc/Netopeer2/modules
-    install -o root -g root ${S}/../modules/ietf-netconf-acm@2018-02-14.yang ${D}/etc/Netopeer2/modules/ietf-netconf-acm@2018-02-14.yang
-    install -o root -g root ${S}/../modules/ietf-netconf@2013-09-29.yang ${D}/etc/Netopeer2/modules/ietf-netconf@2013-09-29.yang
-    install -o root -g root ${S}/../modules/ietf-netconf-monitoring@2010-10-04.yang ${D}/etc/Netopeer2/modules/ietf-netconf-monitoring@2010-10-04.yang
-    install -o root -g root ${S}/../modules/ietf-datastores@2017-08-17.yang  ${D}/etc/Netopeer2/modules/ietf-datastores@2017-08-17.yang
-    install -o root -g root ${S}/../modules/ietf-netconf-nmda@2019-01-07.yang ${D}/etc/Netopeer2/modules/ietf-netconf-nmda@2019-01-07.yang
-    install -o root -g root ${S}/../modules/notifications@2008-07-14.yang ${D}/etc/Netopeer2/modules/notifications@2008-07-14.yang
-    install -o root -g root ${S}/../modules/nc-notifications@2008-07-14.yang ${D}/etc/Netopeer2/modules/nc-notifications@2008-07-14.yang
-    install -o root -g root ${S}/../modules/ietf-x509-cert-to-name@2014-12-10.yang ${D}/etc/Netopeer2/modules/ietf-x509-cert-to-name@2014-12-10.yang
-    install -o root -g root ${S}/../modules/ietf-crypto-types@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-crypto-types@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-keystore@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-keystore@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-truststore@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-truststore@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-tcp-common@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-tcp-common@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-tcp-client@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-tcp-client@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-tcp-server@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-tcp-server@2019-07-02.yang
-    install -o root -g root ${S}/../modules/iana-crypt-hash@2014-08-06.yang ${D}/etc/Netopeer2/modules/iana-crypt-hash@2014-08-06.yang
-    install -o root -g root ${S}/../modules/ietf-ssh-server@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-ssh-server@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-ssh-common@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-ssh-common@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-tls-common@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-tls-common@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-tls-server@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-tls-server@2019-07-02.yang
-    install -o root -g root ${S}/../modules/ietf-netconf-server@2019-07-02.yang ${D}/etc/Netopeer2/modules/ietf-netconf-server@2019-07-02.yang
+    install -o root -g root ${S}/../modules/*.yang ${D}/etc/Netopeer2/modules/
+
     install -d ${D}/etc/Netopeer2/scripts
     install -o root -g root ${S}/setup.sh ${D}/etc/Netopeer2/scripts/setup.sh
     install -o root -g root ${S}/merge_hostkey.sh ${D}/etc/Netopeer2/scripts/merge_hostkey.sh
