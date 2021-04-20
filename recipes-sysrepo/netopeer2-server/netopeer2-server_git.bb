@@ -9,6 +9,7 @@ SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https \
            file://scripts/setup.sh \
            file://scripts/merge_hostkey.sh \
            file://scripts/merge_config.sh \
+           file://scripts/netopeer2-keystored.sh \
            file://scripts/stock_config.xml \
 "
 
