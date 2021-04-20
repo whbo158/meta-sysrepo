@@ -11,7 +11,7 @@ SRCREV = "7879bf38ca67f77cf492ede0a40ba6364cf07815"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "libssh openssl libyang libxcrypt"
+DEPENDS = "doxygen cmocka libssh openssl libyang libxcrypt"
 
 inherit cmake pkgconfig
 
