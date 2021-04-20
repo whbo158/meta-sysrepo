@@ -6,8 +6,8 @@ LIC_FILES_CHKSUM = "file://../LICENSE;md5=b7cb0021418524c05c4e5b21041d9402"
 SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https"
 
 # Modify these as desired
-PV = "0.3.75+git${SRCPV}"
-SRCREV = "bdb8cd747e6573a102b416f9e0cda76455c25ee5"
+PV = "0.7.12+git${SRCPV}"
+SRCREV = "49281975ea78808910701b7af4cf8c7a65ae37b7"
 
 S = "${WORKDIR}/git/keystored"
 
