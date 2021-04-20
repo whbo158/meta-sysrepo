@@ -4,9 +4,9 @@ SECTION = "libs"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b1f886606973edff74d729043d78afef"
 
-SRC_URI = "git://github.com/CESNET/libnetconf2.git;protocol=https"
+SRC_URI = "git://github.com/CESNET/libnetconf2.git;protocol=https;nobranch=1"
 
-PV = "0.12.55+git${SRCPV}"
+#PV = "0.12.55+git${SRCPV}"
 SRCREV = "7879bf38ca67f77cf492ede0a40ba6364cf07815"
 
 S = "${WORKDIR}/git"
