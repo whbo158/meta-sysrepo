@@ -2,12 +2,12 @@
 SUMMARY = "YANG-based configuration and operational state data store for Unix/Linux applications."
 DESCRIPTION = ""
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=e3fc50a88d0a364313df4b21ef20c29e"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=7df5a8706277b586ca000838046993d1"
 
 SRC_URI = "git://github.com/sysrepo/sysrepo.git;protocol=https file://sysrepo"
 
-PV = "1.3.21+git${SRCPV}"
-SRCREV = "bd46e7ce607e53fcd32c235bf3643cae39f1cfd0"
+PV = "0.7.8+git${SRCPV}"
+SRCREV = "4ddc4b959c189a3c25e406640f1d374358b7e9d7"
 
 S = "${WORKDIR}/git"
 
