@@ -4,10 +4,10 @@ DESCRIPTION = ""
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=7df5a8706277b586ca000838046993d1"
 
-SRC_URI = "git://github.com/sysrepo/sysrepo.git;protocol=https file://sysrepo"
+SRC_URI = "git://github.com/sysrepo/sysrepo.git;protocol=https;branch=v0.7.8 file://sysrepo"
 
-PV = "0.7.8+git${SRCPV}"
-SRCREV = "4ddc4b959c189a3c25e406640f1d374358b7e9d7"
+#PV = "0.7.8+git${SRCPV}"
+#SRCREV = "4ddc4b959c189a3c25e406640f1d374358b7e9d7"
 
 S = "${WORKDIR}/git"
 
