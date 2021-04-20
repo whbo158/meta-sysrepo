@@ -3,7 +3,14 @@ DESCRIPTION = "Netopeer2 is based on the new generation of the NETCONF and YANG 
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://../LICENSE;md5=b7cb0021418524c05c4e5b21041d9402"
 
-SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https file://netopeer2-server"
+SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https \
+	   file://netopeer2-server \
+           file://scripts/model-install.sh \
+           file://scripts/setup.sh \
+           file://scripts/merge_hostkey.sh \
+           file://scripts/merge_config.sh \
+           file://scripts/stock_config.xml \
+"
 
 PV = "0.7.12+git${SRCPV}"
 SRCREV = "49281975ea78808910701b7af4cf8c7a65ae37b7"
@@ -18,15 +25,6 @@ inherit cmake pkgconfig
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
 EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE:String=Release -DINSTALL_MODULES:BOOL=OFF -DGENERATE_HOSTKEY:BOOL=OFF -DMERGE_LISTEN_CONFIG:BOOL=OFF"
-
-
-SRC_URI = "${QORIQ_JAILHOUSE_SRC};branch=${SRCBRANCH} \
-           file://scripts/model-install.sh \
-           file://scripts/setup.sh \
-           file://scripts/merge_hostkey.sh \
-           file://scripts/merge_config.sh \
-           file://scripts/stock_config.xml \
-"
 
 do_install_append () {
     install -d ${D}/usr/share/netopeer2-server
