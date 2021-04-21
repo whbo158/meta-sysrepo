@@ -25,7 +25,7 @@ RDEPENDS_${PN} += "bash curl"
 inherit cmake pkgconfig
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
-EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE:String=Release -DINSTALL_MODULES:BOOL=OFF -DGENERATE_HOSTKEY:BOOL=OFF -DMERGE_LISTEN_CONFIG:BOOL=OFF"
+EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE:String=Release -DINSTALL_MODULES:BOOL=OFF -DGENERATE_HOSTKEY:BOOL=OFF -DMERGE_LISTEN_CONFIG:BOOL=OFF -DSYSREPOCTL_EXECUTABLE=/home/wanghb/yocto/yocto-bsp/bld-ls1043ardb/tmp/work/aarch64-fsl-linux/sysrepo/git-r0/image/usr/bin/sysrepoctl -DSYSREPOCFG_EXECUTABLE=/home/wanghb/yocto/yocto-bsp/bld-ls1043ardb/tmp/work/aarch64-fsl-linux/sysrepo/git-r0/image/usr/bin/sysrepocfg"
 
 do_install_append () {
     install -d ${D}/usr/share/netopeer2-server
