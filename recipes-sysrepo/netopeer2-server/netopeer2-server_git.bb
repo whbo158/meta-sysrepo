@@ -35,8 +35,8 @@ do_install_append () {
     install -o root -g root ${S}/../modules/*.yang ${D}/etc/Netopeer2/modules/
 
     install -d ${D}/etc/Netopeer2/scripts
-    install -o root -g root ${S}/../scripts/*.sh ${D}/etc/Netopeer2/scripts/
-    install -o root -g root ${S}/../scripts/*.xml ${D}/etc/Netopeer2/scripts/
+    install -o root -g root ${S}/../../scripts/*.sh ${D}/etc/Netopeer2/scripts/
+    install -o root -g root ${S}/../../scripts/*.xml ${D}/etc/Netopeer2/scripts/
 
     install -d ${D}/etc/netopeer2
     install -d ${D}/etc/init.d
