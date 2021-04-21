@@ -12,6 +12,7 @@ SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https;nobranch=1 \
            file://scripts/netopeer2-keystored.sh \
            file://scripts/stock_config.xml \
            file://0001-netopeer2-server-fix-compile-issue.patch \
+           file://0002-change-PIDFILE_PREFIX-to-tmp.patch \
 "
 
 #PV = "0.7.12+git${SRCPV}"
