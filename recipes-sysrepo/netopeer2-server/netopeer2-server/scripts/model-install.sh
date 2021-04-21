@@ -4,16 +4,16 @@ set -eu -o pipefail
 
 shopt -s failglob
 
-: ${SYSREPOCTL:=sysrepoctl}
-: ${SYSREPOCFG:=sysrepocfg}
+: ${SYSREPOCTL:=/usr/bin/sysrepoctl}
+: ${SYSREPOCFG:=/usr/bin/sysrepocfg}
 : ${SYSREPOCTL_ROOT_PERMS:=-o root:root -p 600}
-: ${STOCK_CONFIG:=/mnt/vda3/software/storage/netopeer-test/netopeer2/server/stock_config.xml}
-: ${YANG_DIR:=/mnt/vda3/software/storage/netopeer-test/netopeer2/server/../modules}
+: ${STOCK_CONFIG:=/etc/Netopeer2/scripts/stock_config.xml}
+: ${YANG_DIR:=/etc/Netopeer2/modules}
 
 is_yang_module_installed() {
     module=$1
 
-    $SYSREPOCTL -l | grep --count "^$module [^|]*|[^|]*| Installed .*$" > /dev/null
+    $SYSREPOCTL -l | grep -c "^$module [^|]*|[^|]*| Installed .*$" > /dev/null
 }
 
 install_yang_module() {
@@ -31,7 +31,7 @@ enable_yang_module_feature() {
     module=$1
     feature=$2
 
-    if ! $SYSREPOCTL -l | grep --count "^$module [^|]*|[^|]*|[^|]*|[^|]*|[^|]*|[^|]*|.* $feature.*$" > /dev/null; then
+    if ! $SYSREPOCTL -l | grep -c "^$module [^|]*|[^|]*|[^|]*|[^|]*|[^|]*|[^|]*|.* $feature.*$" > /dev/null; then
         echo "- Enabling feature $feature in $module..."
         $SYSREPOCTL -m $module -e $feature
     else
