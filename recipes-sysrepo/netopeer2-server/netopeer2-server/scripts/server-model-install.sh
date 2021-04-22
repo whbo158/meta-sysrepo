@@ -6,7 +6,7 @@ shopt -s failglob
 
 : ${SYSREPOCTL:=/usr/bin/sysrepoctl}
 : ${SYSREPOCFG:=/usr/bin/sysrepocfg}
-: ${SYSREPOCTL_ROOT_PERMS:=-o root:root -p 600}
+: ${SYSREPOCTL_ROOT_PERMS:=-o root:root -p 666}
 : ${STOCK_CONFIG:=/etc/Netopeer2/scripts/stock_config.xml}
 : ${YANG_DIR:=/etc/Netopeer2/modules}
 

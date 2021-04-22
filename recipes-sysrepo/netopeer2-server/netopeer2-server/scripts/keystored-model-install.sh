@@ -7,7 +7,7 @@ shopt -s failglob
 local_path=$(dirname $0)
 
 : ${SYSREPOCTL:=/usr/bin/sysrepoctl}
-: ${SYSREPOCTL_ROOT_PERMS:=-o root:root -p 600}
+: ${SYSREPOCTL_ROOT_PERMS:=-o root:root -p 666}
 : ${YANG_DIR:=/etc/Netopeer2/modules}
 
 is_yang_module_installed() {
