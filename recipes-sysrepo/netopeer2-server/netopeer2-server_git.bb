@@ -5,11 +5,13 @@ LIC_FILES_CHKSUM = "file://../LICENSE;md5=b7cb0021418524c05c4e5b21041d9402"
 
 SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https;nobranch=1 \
 	   file://netopeer2-server \
-           file://scripts/model-install.sh \
+           file://scripts/sysrepo-model-install.sh \
+           file://scripts/server-model-install.sh \
            file://scripts/setup.sh \
            file://scripts/merge_hostkey.sh \
            file://scripts/merge_config.sh \
            file://scripts/netopeer2-keystored.sh \
+           file://scripts/keystored-model-install.sh \
            file://scripts/stock_config.xml \
            file://scripts/stock_key_config.xml \
            file://0001-netopeer2-server-fix-compile-issue.patch \
