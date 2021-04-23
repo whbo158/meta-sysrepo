@@ -31,7 +31,8 @@ do_install_append () {
  #   install -o root -g root ${S}/modules/ietf-netconf-with-defaults.yang ${D}/etc/sysrepo/yang/ietf-netconf-with-defaults@2011-06-01.yang
   #  install -o root -g root ${S}/modules/ietf-netconf.yang ${D}/etc/sysrepo/yang/ietf-netconf@2011-06-01.yang
     install -d ${D}/etc/init.d
-    install -m 0775 ${WORKDIR}/sysrepo ${D}/etc/init.d/
+    install -m 0775 ${WORKDIR}/S50sysrepod ${D}/etc/init.d/
+    install -m 0775 ${WORKDIR}/S51sysrepo-plugind ${D}/etc/init.d/
     install -d ${D}/usr/lib/sysrepo/plugins
 }
 
