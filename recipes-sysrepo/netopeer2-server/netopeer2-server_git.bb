@@ -44,6 +44,6 @@ do_install_append () {
 
     install -d ${D}/etc/netopeer2
     install -d ${D}/etc/init.d
-    install -m 0755 ${WORKDIR}/netopeer2-server ${D}/etc/init.d/
+    install -m 0755 ${WORKDIR}/S91netopeer2-server ${D}/etc/init.d/
 }
 
