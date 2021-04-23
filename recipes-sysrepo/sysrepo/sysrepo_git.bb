@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=7df5a8706277b586ca000838046993d1"
 
 SRC_URI = "git://github.com/sysrepo/sysrepo.git;protocol=https;nobranch=1 file://sysrepo \
 	   file://0001-change-var-run-to-tmp.patch \
+	   file://S50sysrepod \
+	   file://S51sysrepo-plugind \
 "
 
 #PV = "0.7.8+git${SRCPV}"
