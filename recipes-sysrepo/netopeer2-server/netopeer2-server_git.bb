@@ -16,6 +16,7 @@ SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https;nobranch=1 \
            file://scripts/stock_key_config.xml \
            file://0001-netopeer2-server-fix-compile-issue.patch \
            file://0002-change-PIDFILE_PREFIX-to-tmp.patch \
+           file://0003.patch \
            file://S91netopeer2-server \
 "
 
@@ -31,7 +32,7 @@ RDEPENDS_${PN} += "bash curl"
 inherit cmake pkgconfig
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
-EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE:String=Release -DINSTALL_MODULES:BOOL=OFF -DGENERATE_HOSTKEY:BOOL=OFF -DMERGE_LISTEN_CONFIG:BOOL=OFF -DSYSREPOCTL_EXECUTABLE=/usr/bin/sysrepoctl -DSYSREPOCFG_EXECUTABLE=/usr/bin/sysrepocfg -DKEYSTORED_KEYS_DIR=/etc/keystored/keys "
+EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE:String=Release -DINSTALL_MODULES:BOOL=OFF -DGENERATE_HOSTKEY:BOOL=OFF -DMERGE_LISTEN_CONFIG:BOOL=OFF -DSYSREPOCTL_EXECUTABLE=/usr/bin/sysrepoctl -DSYSREPOCFG_EXECUTABLE=/usr/bin/sysrepocfg -DKEYSTORED_KEYS_DIR=/etc/keystored/keys -DSYSREPOCTL_ROOT_PERMS="-p 666" "
 
 do_install_append () {
     install -d ${D}/usr/share/netopeer2-server
