@@ -1,0 +1,361 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 882e591..4a4e2d9 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -22,9 +22,10 @@ if(NOT CMAKE_BUILD_TYPE)
+     set(CMAKE_BUILD_TYPE debug)
+ endif()
+ 
+-set(CMAKE_C_FLAGS         "${CMAKE_C_FLAGS} -Wall -Wextra -std=gnu11")
+-set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+-set(CMAKE_C_FLAGS_DEBUG   "-g -O0 -DDEBUG")
++set(CMAKE_C_FLAGS "--sysroot=/home/wanghb/yocto/yocto-bsp/bld-ls1043ardb/tmp/work/aarch64-fsl-linux/netopeer2-server/git-r0/recipe-sysroot ")
++#set(CMAKE_C_FLAGS "--sysroot=/home/wanghb/yocto/yocto-bsp/bld-ls1043ardb/tmp/work/aarch64-fsl-linux/netopeer2-server/git-r0/recipe-sysroot -Wall -Wextra -std=gnu11")
++#set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
++#set(CMAKE_C_FLAGS_DEBUG   "-g -O0 -DDEBUG")
+ 
+ # build options
+ if(CMAKE_BUILD_TYPE STREQUAL debug)
+@@ -180,20 +181,20 @@ if (ENABLE_CONFIGURATION)
+     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/scripts/model-install.sh.in" "${PROJECT_BINARY_DIR}/model-install.sh" ESCAPE_QUOTES @ONLY)
+ 
+     # find sysrepoctl
+-    if (NOT SYSREPOCTL_EXECUTABLE)
+-        find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)
+-    endif()
+-    if (NOT SYSREPOCTL_EXECUTABLE)
+-        message(FATAL_ERROR "Unable to find sysrepoctl, set SYSREPOCTL_EXECUTABLE manually.")
+-    endif()
++    # if (NOT SYSREPOCTL_EXECUTABLE)
++    #   find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)
++    #endif()
++    #if (NOT SYSREPOCTL_EXECUTABLE)
++    #   message(FATAL_ERROR "Unable to find sysrepoctl, set SYSREPOCTL_EXECUTABLE manually.")
++    #endif()
+ 
+     # find sysrepocfg
+-    if (NOT SYSREPOCFG_EXECUTABLE)
+-        find_program(SYSREPOCFG_EXECUTABLE sysrepocfg)
+-    endif()
+-    if (NOT SYSREPOCFG_EXECUTABLE)
+-        message(FATAL_ERROR "Unable to find sysrepocfg, set SYSREPOCFG_EXECUTABLE manually.")
+-    endif()
++    #if (NOT SYSREPOCFG_EXECUTABLE)
++    #    find_program(SYSREPOCFG_EXECUTABLE sysrepocfg)
++    #endif()
++    #if (NOT SYSREPOCFG_EXECUTABLE)
++    #    message(FATAL_ERROR "Unable to find sysrepocfg, set SYSREPOCFG_EXECUTABLE manually.")
++    #endif()
+ 
+     # Command line options to be passed to `sysrepoctl` when working with modules
+     # which should only be accessible by an administrator
+@@ -226,18 +227,4 @@ if(ENABLE_VALGRIND_TESTS)
+     set(ENABLE_BUILD_TESTS ON)
+ endif()
+ 
+-if(ENABLE_BUILD_TESTS)
+-    find_package(CMocka 1.0.0)
+-    if(CMOCKA_FOUND)
+-        enable_testing()
+-        add_subdirectory(tests)
+-    endif(CMOCKA_FOUND)
+-endif(ENABLE_BUILD_TESTS)
+-
+-add_custom_target(integration-test
+-                  COMMAND make build
+-                  COMMAND make test
+-                  WORKING_DIRECTORY integration-tests/
+-                  COMMENT Running integration-tests)
+-
+ file(COPY integration-tests DESTINATION ${CMAKE_BINARY_DIR})
+diff --git a/ietf_netconf_server.c b/ietf_netconf_server.c
+index 37dc0c6..684f1de 100644
+--- a/ietf_netconf_server.c
++++ b/ietf_netconf_server.c
+@@ -119,10 +119,13 @@ set_listen_endpoint_port(const char *endpt_name, sr_change_oper_t sr_oper, sr_va
+ {
+     int rc = -1;
+ 
++    WRN("WHB end port00 rc:%d endpt:%s val:%d\n", rc, endpt_name, sr_new_val->data.uint16_val);
+     switch (sr_oper) {
+     case SR_OP_CREATED:
+     case SR_OP_MODIFIED:
++	//sr_new_val->data.uint16_val = 1023;
+         rc = nc_server_endpt_set_port(endpt_name, sr_new_val->data.uint16_val);
++		WRN("WHB end port11 rc:%d endpt:%s val:%d\n", rc, endpt_name, sr_new_val->data.uint16_val);
+         break;
+     case SR_OP_DELETED:
+     case SR_OP_MOVED:
+@@ -699,7 +702,7 @@ module_change_resolve(sr_session_ctx_t *srs, sr_change_oper_t sr_oper, sr_val_t
+         break;
+     }
+ 
+-    VRB("Path \"%s\" %s.", xpath, oper_str);
++    WRN("WHB Path \"%s\" %s.", xpath, oper_str);
+ 
+     xpath += 35;
+ 
+@@ -768,6 +771,7 @@ module_change_resolve(sr_session_ctx_t *srs, sr_change_oper_t sr_oper, sr_val_t
+                     rc = set_listen_endpoint_address(list1_key, sr_oper, sr_old_val, sr_new_val);
+                 } else if (!strcmp(xpath, "port")) {
+                     rc = set_listen_endpoint_port(list1_key, sr_oper, sr_old_val, sr_new_val);
++		WRN("WHB port00 rc:%d\n", rc);
+                 } else if (!strcmp(xpath, "host-keys")) {
+                     /* ignore */
+                     rc = 0;
+@@ -807,6 +811,7 @@ module_change_resolve(sr_session_ctx_t *srs, sr_change_oper_t sr_oper, sr_val_t
+                     rc = set_listen_endpoint_address(list1_key, sr_oper, sr_old_val, sr_new_val);
+                 } else if (!strcmp(xpath, "port")) {
+                     rc = set_listen_endpoint_port(list1_key, sr_oper, sr_old_val, sr_new_val);
++		WRN("WHB port11 rc:%d\n", rc);
+                 } else if (!strcmp(xpath, "certificates")) {
+                     /* ignore */
+                     rc = 0;
+@@ -932,6 +937,7 @@ module_change_resolve(sr_session_ctx_t *srs, sr_change_oper_t sr_oper, sr_val_t
+                             rc = set_ch_client_endpoint_address(list1_key, list2_key, sr_oper, sr_old_val, sr_new_val);
+                         } else if (!strcmp(xpath, "port")) {
+                             rc = set_ch_client_endpoint_port(list1_key, list2_key, sr_oper, sr_old_val, sr_new_val);
++		WRN("WHB port22 rc:%d\n", rc);
+                         }
+                     }
+                 } else if (!strcmp(xpath, "host-keys")) {
+@@ -1011,6 +1017,7 @@ module_change_resolve(sr_session_ctx_t *srs, sr_change_oper_t sr_oper, sr_val_t
+                             rc = set_ch_client_endpoint_address(list1_key, list2_key, sr_oper, sr_old_val, sr_new_val);
+                         } else if (!strcmp(xpath, "port")) {
+                             rc = set_ch_client_endpoint_port(list1_key, list2_key, sr_oper, sr_old_val, sr_new_val);
++		WRN("WHB port33 rc:%d\n", rc);
+                         }
+                     }
+                 } else if (!strcmp(xpath, "certificates")) {
+@@ -1108,7 +1115,7 @@ module_change_resolve(sr_session_ctx_t *srs, sr_change_oper_t sr_oper, sr_val_t
+     lydict_remove(np2srv.ly_ctx, list1_key);
+     lydict_remove(np2srv.ly_ctx, list2_key);
+     if (rc == -2) {
+-        ERR("Unknown value \"%s\" change.", (sr_old_val ? sr_old_val->xpath : sr_new_val->xpath));
++        WRN("Unknown value \"%s\" change.", (sr_old_val ? sr_old_val->xpath : sr_new_val->xpath));
+         rc = -1;
+     }
+     return rc;
+@@ -1190,6 +1197,7 @@ feature_change_ietf_netconf_server(const char *feature_name, bool enabled)
+         np2srv_sr_session_refresh(np2srv.sr_sess.srs, NULL);
+ 
+         if (np2srv_sr_get_items_iter(np2srv.sr_sess.srs, path, &sr_iter, NULL)) {
++	WRN("WHB mm00 feature:%s path:%s\n", feature_name, path);
+             return -1;
+         }
+ 
+@@ -1200,6 +1208,7 @@ feature_change_ietf_netconf_server(const char *feature_name, bool enabled)
+             }
+ 
+             rc = module_change_resolve(np2srv.sr_sess.srs, SR_OP_CREATED, NULL, sr_val, NULL, NULL);
++	WRN("WHB mm22 feature:%s rc:%d\n", feature_name, rc);
+             sr_free_val(sr_val);
+             if (rc) {
+                 break;
+@@ -1207,6 +1216,7 @@ feature_change_ietf_netconf_server(const char *feature_name, bool enabled)
+         }
+         sr_free_val_iter(sr_iter);
+         if (rc == -1) {
++	WRN("WHB mm11 feature:%s path:%s\n", feature_name, path);
+             return rc;
+         }
+     } else {
+@@ -1248,22 +1258,26 @@ ietf_netconf_server_init(const struct lys_module *module)
+     /* applies the whole current configuration */
+     if (lys_features_state(module, "ssh-listen") == 1) {
+         if (feature_change_ietf_netconf_server("ssh-listen", 1)) {
++	WRN("WHB t00\n");
+             return -1;
+         }
+     }
+     if (lys_features_state(module, "ssh-call-home") == 1) {
+         if (feature_change_ietf_netconf_server("ssh-call-home", 1)) {
++	WRN("WHB t01\n");
+             return -1;
+         }
+     }
+ #ifdef NC_ENABLED_TLS
+     if (lys_features_state(module, "tls-listen") == 1) {
+         if (feature_change_ietf_netconf_server("tls-listen", 1)) {
++	WRN("WHB t02\n");
+             return -1;
+         }
+     }
+     if (lys_features_state(module, "tls-call-home") == 1) {
+         if (feature_change_ietf_netconf_server("tls-call-home", 1)) {
++	WRN("WHB t03\n");
+             return -1;
+         }
+     }
+diff --git a/main.c b/main.c
+index 601e8a8..afe2e40 100644
+--- a/main.c
++++ b/main.c
+@@ -68,6 +68,7 @@ static int np2srv_state_data_clb(const char *xpath, sr_val_t **values, size_t *v
+ static void np2srv_feature_change_clb(const char *module_name, const char *feature_name, bool enabled, void *private_ctx);
+ static void np2srv_module_install_clb(const char *module_name, const char *revision, sr_module_state_t state, void *private_ctx);
+ 
++#if 1
+ int
+ np2srv_sr_reconnect(void)
+ {
+@@ -1328,37 +1329,47 @@ server_init(void)
+     snode = ly_ctx_get_node(np2srv.ly_ctx, NULL, "/notifications:create-subscription", 0);
+     nc_set_rpc_callback(snode, op_ntf_subscribe);
+ 
++	WRN("WHB 000\n");
+     /* set server options */
+     mod = ly_ctx_get_module(np2srv.ly_ctx, "ietf-netconf-server", NULL, 1);
++    WRN("WHB dddttt %p-%s\n", mod, NP2SRV_KEYSTORED_DIR);
+     if (mod && strcmp(NP2SRV_KEYSTORED_DIR, "none")) {
+ #ifdef ENABLED_TLS
+         nc_server_tls_set_verify_clb(np2srv_verify_clb);
+ #endif
+         if (ietf_netconf_server_init(mod)) {
++	WRN("WHB 111i111\n");
+             goto error;
+         }
+ 
+         mod = ly_ctx_get_module(np2srv.ly_ctx, "ietf-system", NULL, 1);
+         if (mod) {
+             if (ietf_system_init(mod)) {
++	WRN("WHB 111i222\n");
+                 goto error;
+             }
+         } else {
+             WRN("Sysrepo does not implement the \"ietf-system\" module, SSH publickey authentication will not work.");
+         }
++	WRN("WHB 111\n");
+     } else {
+         WRN("Sysrepo does not have the \"ietf-netconf-server\" module or keystored keys dir unknown, using default NETCONF server options.");
++	WRN("WHB 222\n");
+         nc_server_ssh_set_hostkey_clb(np2srv_default_hostkey_clb, NULL, NULL);
+         if (nc_server_add_endpt("main", NC_TI_LIBSSH)) {
++	WRN("WHB 333\n");
+             goto error;
+         }
+         if (nc_server_endpt_set_address("main", "0.0.0.0")) {
++	WRN("WHB 444\n");
+             goto error;
+         }
+         if (nc_server_endpt_set_port("main", 830)) {
++	WRN("WHB 555\n");
+             goto error;
+         }
+         if (nc_server_ssh_endpt_add_hostkey("main", "default", -1)) {
++	WRN("WHB 666\n");
+             goto error;
+         }
+     }
+@@ -1527,10 +1538,90 @@ static gid_t parse_gid(const char *arg)
+     return grp->gr_gid;
+ }
+ 
++#endif
++
++#define SOCKET_FAILED (-1)
++
++#define HTONS(x) (htons(x))
++#define HTONL(x) (htonl(x))
++
++#define hy_warn printf
++#define TCP_BUF_LEN (1024)
++
++static char sdata_buf[TCP_BUF_LEN];
++
++static int si_flag = 0;
++static int tcp_start_listen(int port)
++{
++	struct sockaddr_in server_addr;
++	struct sockaddr_in client_addr;
++	char *pbuf = sdata_buf;
++	socklen_t addr_len;
++	int client_fd = 0;
++	int slisten_fd;
++	int opt = 1;
++	int ret = 0;
++
++	if (si_flag) {
++		printf("%s: WHB has been runned!\n", __func__);
++		return 0;
++	}
++	si_flag = 1;
++
++	bzero(&server_addr, sizeof(server_addr));
++	server_addr.sin_family = AF_INET;
++	server_addr.sin_port = HTONS(port);
++	server_addr.sin_addr.s_addr = HTONL(INADDR_ANY);
++
++	slisten_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
++	if (slisten_fd == SOCKET_FAILED) {
++		hy_warn("%s: create socket failed. info:%s\n", __func__, strerror(errno));
++		goto ret_tag;
++	}
++
++	setsockopt(slisten_fd, SOL_SOCKET, SO_REUSEADDR, (const void *)&opt, sizeof(opt));
++
++	ret = bind(slisten_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
++	if (ret == SOCKET_FAILED) {
++		hy_warn("%s: bind port:%d failed. info:%s\n", __func__, port, strerror(errno));
++		goto ret_tag;
++	}
++	hy_warn("%s: WHB bind port:%d OK! info:%s\n", __func__, port, strerror(errno));
++
++	ret = listen(slisten_fd, 5);
++	if (ret == SOCKET_FAILED) {
++		hy_warn("%s: listen socket failed. info:%s\n", __func__, strerror(errno));
++		goto ret_tag;
++	}
++
++	client_fd = accept(slisten_fd, (struct sockaddr *)&client_addr, &addr_len);
++	if (client_fd == SOCKET_FAILED) {
++		hy_warn("%s: accept failed. info:%s\n", __func__, strerror(errno));
++		goto ret_tag;
++	}
++
++	while (1) {
++		ret = recv(client_fd, pbuf, TCP_BUF_LEN, 0);
++		if (ret < 0)
++			break;
++
++		printf("recv:%s\n", pbuf);
++	}
++
++	return 0;
++
++ret_tag:
++	if (slisten_fd != SOCKET_FAILED)
++		close(slisten_fd);
++
++	return ret;
++}
++
+ int
+ main(int argc, char *argv[])
+ {
+     int ret = EXIT_SUCCESS;
++#if 1
+     int c, *idx, i;
+     int daemonize = 1, verb = 0;
+     int pidfd;
+@@ -1540,7 +1631,12 @@ main(int argc, char *argv[])
+ #endif
+     struct sigaction action;
+     sigset_t block_mask;
++#endif
+ 
++printf("WHB JUST FOR TEST03 0428\n");
++//   tcp_start_listen(830);
++//    return 0;
++#if 1
+     /* until daemonized, write messages to both syslog and stderr */
+     openlog("netopeer2-server", LOG_PID, LOG_DAEMON);
+     np2_stderr_log = 1;
+@@ -1792,6 +1888,6 @@ cleanup:
+ 
+     /* libyang cleanup */
+     ly_ctx_destroy(np2srv.ly_ctx, NULL);
+-
++#endif
+     return ret;
+ }
