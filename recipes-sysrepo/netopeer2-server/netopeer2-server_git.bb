@@ -17,6 +17,7 @@ SRC_URI = "git://github.com/CESNET/Netopeer2.git;protocol=https;nobranch=1 \
            file://0001-netopeer2-server-fix-compile-issue.patch \
            file://0002-change-PIDFILE_PREFIX-to-tmp.patch \
            file://0003.patch \
+           file://S40sysrepo-init \
            file://S91netopeer2-server \
 "
 
@@ -45,7 +46,8 @@ do_install_append () {
     install -o root -g root ${S}/../../scripts/*.xml ${D}/etc/Netopeer2/scripts/
 
     install -d ${D}/etc/netopeer2
-    install -d ${D}/etc/init.d
-    install -m 0755 ${WORKDIR}/S91netopeer2-server ${D}/etc/init.d/
+    install -d ${D}/etc/rc5.d
+    install -m 0755 ${WORKDIR}/S40sysrepo-init ${D}/etc/rc5.d/
+    install -m 0755 ${WORKDIR}/S91netopeer2-server ${D}/etc/rc5.d/
 }
 

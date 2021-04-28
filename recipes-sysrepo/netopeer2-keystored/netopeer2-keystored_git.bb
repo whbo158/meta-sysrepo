@@ -28,5 +28,6 @@ do_install_append () {
     install -d ${D}/etc/sysrepo/yang
     cp -r ${S}/../modules/ietf-keystore.yang ${D}/etc/sysrepo/yang/
 
-    install -m 0755 ${WORKDIR}/S80netopeer2-keystored ${D}/etc/init.d/
+#    install -d ${D}/etc/rc5.d
+#    install -m 0755 ${WORKDIR}/S80netopeer2-keystored ${D}/etc/rc5.d/
 }

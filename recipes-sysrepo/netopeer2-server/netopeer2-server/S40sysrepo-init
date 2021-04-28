@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+shopt -s failglob
+
+local_path=$(dirname $0)
+
+cd /etc/Netopeer2/scripts
+./libyang-model-install.sh
+./keystored-model-install.sh
+./netopeer2-keystored.sh
+./server-model-install.sh
+
+cd /etc/sysrepo-tsn/scripts
+./model-install.sh
+
+cd /home/root/
