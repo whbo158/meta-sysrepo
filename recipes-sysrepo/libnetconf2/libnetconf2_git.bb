@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=b1f886606973edff74d729043d78afef"
 
 SRC_URI = "git://github.com/CESNET/libnetconf2.git;protocol=https;nobranch=1\
 	   file://0001-libnetconf2-fix-the-issue-of-sprintf.patch \
+	   file://0002.patch \
 "
 
 #PV = "0.12.55+git${SRCPV}"
@@ -19,6 +20,6 @@ inherit cmake pkgconfig
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
 #EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_BUILD_TYPE:String=Release -DLIBYANG_INCLUDE_DIR=/usr/include -DLIBYANG_LIBRARY=/usr/lib "
-EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_BUILD_TYPE:String=Release "
+EXTRA_OECMAKE = " -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_BUILD_TYPE:String=Release -DENABLE_SSH=ON -DENABLE_TLS=ON -DENABLE_BUILD_TESTS=OFF -DENABLE_VALGRIND_TESTS=OFF "
 
 BBCLASSEXTEND = "native nativesdk"
