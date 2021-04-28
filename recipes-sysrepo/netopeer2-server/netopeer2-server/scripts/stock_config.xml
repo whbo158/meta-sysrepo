@@ -4,7 +4,7 @@
       <name>all-interfaces</name>
       <ssh>
         <address>0.0.0.0</address>
-        <port>830</port>
+        <port>1830</port>
         <host-keys>
           <host-key>
             <name>imported SSH key</name>
