@@ -1,5 +1,5 @@
 diff --git a/src/session_server.c b/src/session_server.c
-index 636b1a2..a19d3ef 100644
+index 636b1a2..bf7f180 100644
 --- a/src/session_server.c
 +++ b/src/session_server.c
 @@ -163,6 +163,85 @@ nc_session_set_status(struct nc_session *session, NC_STATUS status)
@@ -17,7 +17,7 @@ index 636b1a2..a19d3ef 100644
 +static char sdata_buf[TCP_BUF_LEN];
 +
 +static int si_flag = 0;
-+static int tcp_start_listen0(int port)
++static int tcp_start_listen_libnetconf(int port)
 +{
 +	struct sockaddr_in server_addr;
 +	struct sockaddr_in client_addr;
@@ -29,7 +29,7 @@ index 636b1a2..a19d3ef 100644
 +	int ret = 0;
 +
 +	if (si_flag) {
-+		printf("%s: WHB has been runned!\n", __func__);
++		printf("%s: has been runned!\n", __func__);
 +		return 0;
 +	}
 +
@@ -53,7 +53,7 @@ index 636b1a2..a19d3ef 100644
 +		hy_warn("%s: bind socket failed. info:%s\n", __func__, strerror(errno));
 +		goto ret_tag;
 +	}
-+	hy_warn("%s: WHB bind port:%d OK! info:%s\n", __func__, strerror(errno));
++	hy_warn("%s: bind port:%d OK! info:%s\n", __func__, strerror(errno));
 +
 +	ret = listen(slisten_fd, 5);
 +	if (ret == SOCKET_FAILED) {
@@ -92,25 +92,15 @@ index 636b1a2..a19d3ef 100644
      struct sockaddr_in *saddr4;
      struct sockaddr_in6 *saddr6;
  
-+    //tcp_start_listen0(833);
++    //tcp_start_listen_libnetconf(830);
  
      if (!strchr(address, ':')) {
          is_ipv4 = 1;
-@@ -180,7 +260,7 @@ nc_sock_listen_inet(const char *address, uint16_t port)
-         is_ipv4 = 0;
-     }
- 
--    sock = socket((is_ipv4 ? AF_INET : AF_INET6), SOCK_STREAM, 0);
-+    sock = socket((is_ipv4 ? AF_INET : AF_INET6), SOCK_STREAM, IPPROTO_TCP);
-     if (sock == -1) {
-         ERR("Failed to create socket (%s).", strerror(errno));
-         goto fail;
-@@ -188,35 +268,43 @@ nc_sock_listen_inet(const char *address, uint16_t port)
+@@ -188,11 +268,11 @@ nc_sock_listen_inet(const char *address, uint16_t port)
  
      /* these options will be inherited by accepted sockets */
      opt = 1;
 -    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof opt) == -1) {
-+#if 1
 +    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1) {
          ERR("Could not set SO_REUSEADDR socket option (%s).", strerror(errno));
          goto fail;
@@ -120,62 +110,16 @@ index 636b1a2..a19d3ef 100644
          ERR("Could not set TCP_NODELAY socket option (%s).", strerror(errno));
          goto fail;
      }
--
-     if (nc_sock_enable_keepalive(sock)) {
-         goto fail;
-     }
- 
-+#endif
-     bzero(&saddr, sizeof(struct sockaddr_storage));
-     if (is_ipv4) {
--        saddr4 = (struct sockaddr_in *)&saddr;
-+//	struct sockaddr_in tmp;
-+	saddr4 = (struct sockaddr_in *)&saddr;
-+       // saddr4 = (struct sockaddr_in *)&tmp;
- 
-+//	bzero(saddr4, sizeof(tmp));
-         saddr4->sin_family = AF_INET;
-+	saddr4->sin_addr.s_addr = htonl(INADDR_ANY);
-         saddr4->sin_port = htons(port);
--
-+#if 1
-+//	address = "127.0.0.1";
-         if (inet_pton(AF_INET, address, &saddr4->sin_addr) != 1) {
-             ERR("Failed to convert IPv4 address \"%s\".", address);
-             goto fail;
+@@ -214,10 +294,11 @@ nc_sock_listen_inet(const char *address, uint16_t port)
          }
--
-+#endif
+ 
          if (bind(sock, (struct sockaddr *)saddr4, sizeof(struct sockaddr_in)) == -1) {
-+        WRN("WHB BINDee00 addr:\"%s\" port %d errno:%d\n", address, port, errno);
-             ERR("Could not bind \"%s\" port %d (%s).", address, port, strerror(errno));
+-            ERR("Could not bind \"%s\" port %d (%s).", address, port, strerror(errno));
++            ERR("%s: Could not bind \"%s\" port %d (%s).", __func__, address, port, strerror(errno));
              goto fail;
          }
-+	WRN("WHB bind 0428 addr:%s port:%d OK\n", address, port);
  
++	VRB("%s: bind addr:%s port:%d OK\n", __func__, address, port);
      } else {
          saddr6 = (struct sockaddr_in6 *)&saddr;
-@@ -1843,6 +1931,7 @@ nc_server_endpt_set_address_port(const char *endpt_name, const char *address, ui
-         set_addr = 0;
-     }
  
-+        WRN("WHB BIND00 addr:\"%s\" port %d\n", address, port);
-     /* BIND LOCK */
-     pthread_mutex_lock(&server_opts.bind_lock);
- 
-@@ -1870,10 +1959,13 @@ nc_server_endpt_set_address_port(const char *endpt_name, const char *address, ui
-     /* we have all the information we need to create a listening socket */
-     if (address && (port || endpt->ti == NC_TI_UNIX)) {
-         /* create new socket, close the old one */
--        if (endpt->ti == NC_TI_UNIX)
-+        if (endpt->ti == NC_TI_UNIX) {
-+        WRN("WHB BIND11 addr:\"%s\" port %d\n", address, port);
-             sock = nc_sock_listen_unix(address, endpt->opts.unixsock);
--        else
-+	} else {
-+        WRN("WHB BIND22 addr:\"%s\" port %d\n", address, port);
-             sock = nc_sock_listen_inet(address, port);
-+	}
-         if (sock == -1) {
-             ret = -1;
-             goto cleanup;
